@@ -1,0 +1,137 @@
+create database db_unifecaf;
+use db_unifecaf;
+
+create table tbl_unifecaf (
+id int not null primary key auto_increment
+);
+
+create table tbl_professores(
+id int not null primary key auto_increment,
+nome_completo varchar(45) not null,
+telefone varchar(45) not null,
+cpf varchar(45) not null,
+rg varchar(45),
+id_unifecaf int not null,
+
+constraint fk_professores_unifecaf
+foreign key (id_unifecaf)
+references tbl_unifecaf (id)
+);
+
+create table tbl_aluno(
+id int not null primary key auto_increment,
+nome_completo varchar(45) not null,
+cpf varchar(45) not null,
+rg varchar(45),
+telefone varchar(45) not null,
+id_unifecaf int not null,
+
+constraint fk_aluno_unifecaf
+foreign key (id_unifecaf)
+references tbl_unifecaf (id)
+);
+
+create table tbl_cursos(
+id int not null primary key auto_increment,
+materias varchar(45),
+id_aluno int not null,
+
+constraint fk_cursos_aluno
+foreign key (id_aluno)
+references tbl_aluno(id)
+);
+
+create table tbl_relatorios(
+id int not null primary key auto_increment,
+relatorio_aluno varchar(200) not null,
+id_unifecaf int not null,
+id_professores int not null,
+
+constraint fk_relatorios_unifecaf
+foreign key (id_unifecaf)
+references tbl_unifecaf(id),
+
+constraint fk_relatorios_professores
+foreign key (id_professores)
+references tbl_professores(id)
+);
+
+
+create table tbl_notas(
+id int not null primary key auto_increment,
+nota varchar(45) not null,
+data date not null,
+id_aluno int not null,
+id_cursos int not null,
+
+constraint fk_notas_aluno
+foreign key (id_aluno)
+references tbl_aluno(id),
+
+constraint fk_notas_cursos
+foreign key (id_cursos)
+references tbl_cursos(id)
+);
+
+create table tbl_responsaveis_legais(
+id int not null primary key auto_increment,
+nome_completo varchar(45) not null,
+telefone varchar(45) not null,
+id_unifecaf int not null,
+
+constraint fk_responsaveis_legais_unifecaf
+foreign key (id_unifecaf)
+references tbl_unifecaf (id)
+);
+
+create table tbl_aluno_curso(
+id int not null primary key auto_increment,
+id_cursos int not null,
+id_aluno int not null,
+
+constraint fk_aluno_curso_aluno
+foreign key (id_aluno)
+references tbl_aluno(id),
+
+constraint fk_aluno_curso_cursos
+foreign key (id_cursos)
+references tbl_cursos(id)
+);
+
+
+create table tbl_endereco_aluno(
+id int not null primary key auto_increment,
+logradouro varchar(45) not null,
+cidade varchar(45) not null,
+bairro varchar(45) not null,
+estado varchar(45) not null,
+pais varchar(45) not null,
+id_unifecaf int not null,
+id_aluno int not null,
+
+constraint fk_endereco_aluno_unifecaf
+foreign key (id_unifecaf)
+references tbl_unifecaf(id),
+
+constraint fk_endereco_aluno_aluno
+foreign key (id_aluno)
+references tbl_aluno(id)
+);
+
+create table tbl_endereco_professor(
+id int not null primary key auto_increment,
+logradouro varchar(45) not null,
+cidade varchar(45) not null,
+bairro varchar(45) not null,
+estado varchar(45) not null,
+pais varchar(45) not null,
+id_unifecaf int not null,
+id_professores int not null,
+
+constraint fk_endereco_proferssor_unifecaf
+foreign key (id_unifecaf)
+references tbl_unifecaf(id),
+
+constraint fk_endereco_professor_professor
+foreign key (id_professores)
+references tbl_professores(id));
